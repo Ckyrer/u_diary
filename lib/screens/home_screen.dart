@@ -113,16 +113,26 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ),
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(15),
-              child: Text(
-                  style: const TextStyle(
-                    fontSize: 16,
+            child: GestureDetector(
+              onHorizontalDragEnd: (details) {
+                print(details.velocity);
+                // Swiping in right direction.
+                if ( details.velocity.pixelsPerSecond.dx < 0.0 ) _setDate(selectedDate.add(const Duration(days: 1)));
+
+                // Swiping in left direction.
+                if ( details.velocity.pixelsPerSecond.dx > 0.0 ) _setDate(selectedDate.subtract(const Duration(days: 1)));
+              },
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                    maxLines: null,
+                    Provider.of<MyDataProvider>(context).dayData.content,
                   ),
-                  maxLines: null,
-                  Provider.of<MyDataProvider>(context).dayData.content,
                 ),
-              ),
+            ),
           )
         ],
       ),
